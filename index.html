@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filipe-Chat</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+    
+</head>
+
+<body>
+    <header>
+        <form id="form">
+            <input type="text" id="msg" placeholder="Enter your message" autofocus>
+            <button type="submit">Enviar</button>
+    </header>
+    <ul id="messages"></ul>
+    <div id="status"></div> 
+    <script>
+        $(function () {
+            const socket = io();
+            $('#form').submit(function(e){
+                e.preventDefault();
+                socket.emit('chat message', $('#msg').val());
+                $('#msg').val('');
+                return false;
+            });
+            socket.on('chat message', function(msg){
+                $('#messages').append($('<li>').text(msg));
+            });
+        
+        });
+    </script>   
+</body>
+</html>
